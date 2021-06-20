@@ -133,7 +133,7 @@ def train():
 
     batch = tf.Variable(0, trainable=False)
     
-    learning_rate = tf.train.exponential_decay(
+    learning_rate = tf.compat.v1.train.exponential_decay(
             BASE_LEARNING_RATE,     # base learning rate
             batch * batch_size,     # global_var indicating the number of steps
             DECAY_STEP,             # step size
@@ -142,7 +142,7 @@ def train():
             )
     learning_rate = tf.maximum(learning_rate, LEARNING_RATE_CLIP)
   
-    bn_momentum = tf.train.exponential_decay(
+    bn_momentum = tf.compat.v1.train.exponential_decay(
           BN_INIT_DECAY,
           batch*batch_size,
           BN_DECAY_DECAY_STEP,
