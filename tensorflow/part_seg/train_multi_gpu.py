@@ -167,10 +167,10 @@ def train():
       for i in xrange(FLAGS.num_gpu):
         with tf.device('/gpu:%d' % i):
           with tf.name_scope('%s_%d' % (TOWER_NAME, i)) as scope:
-            pointclouds_phs.append(tf.placeholder(tf.float32, shape=(batch_size, point_num, 3))) # for points
-            input_label_phs.append(tf.placeholder(tf.float32, shape=(batch_size, NUM_CATEGORIES))) # for one-hot category label
-            seg_phs.append(tf.placeholder(tf.int32, shape=(batch_size, point_num))) # for part labels
-            is_training_phs.append(tf.placeholder(tf.bool, shape=()))
+            pointclouds_phs.append(tf.compat.v1.placeholder(tf.float32, shape=(batch_size, point_num, 3))) # for points
+            input_label_phs.append(tf.compat.v1.placeholder(tf.float32, shape=(batch_size, NUM_CATEGORIES))) # for one-hot category label
+            seg_phs.append(tf.compat.v1.placeholder(tf.int32, shape=(batch_size, point_num))) # for part labels
+            is_training_phs.append(tf.compat.v1.placeholder(tf.bool, shape=()))
 
             seg_pred = model.get_model(pointclouds_phs[-1], input_label_phs[-1], \
                 is_training=is_training_phs[-1], bn_decay=bn_decay, cat_num=NUM_CATEGORIES, \
@@ -180,12 +180,12 @@ def train():
             loss, per_instance_seg_loss, per_instance_seg_pred_res  \
               = model.get_loss(seg_pred, seg_phs[-1])
 
-            total_training_loss_ph = tf.placeholder(tf.float32, shape=())
-            total_testing_loss_ph = tf.placeholder(tf.float32, shape=())
+            total_training_loss_ph = tf.compat.v1.placeholder(tf.float32, shape=())
+            total_testing_loss_ph = tf.compat.v1.placeholder(tf.float32, shape=())
 
-            seg_training_acc_ph = tf.placeholder(tf.float32, shape=())
-            seg_testing_acc_ph = tf.placeholder(tf.float32, shape=())
-            seg_testing_acc_avg_cat_ph = tf.placeholder(tf.float32, shape=())
+            seg_training_acc_ph = tf.compat.v1.placeholder(tf.float32, shape=())
+            seg_testing_acc_ph = tf.compat.v1.placeholder(tf.float32, shape=())
+            seg_testing_acc_avg_cat_ph = tf.compat.v1.placeholder(tf.float32, shape=())
 
             total_train_loss_sum_op = tf.summary.scalar('total_training_loss', total_training_loss_ph)
             total_test_loss_sum_op = tf.summary.scalar('total_testing_loss', total_testing_loss_ph)
